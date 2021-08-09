@@ -28,7 +28,7 @@
             v-model="form.diet"
             :multiple="true"
           >
-            <el-option label="High Protien" value="high-protien"></el-option>
+            <el-option label="High Protien" value="high-protein"></el-option>
             <el-option label="Low Carb" value="low-carb"></el-option>
             <el-option label="Low Fat" value="low-fat"></el-option>
             <el-option label="Low Sodium" value="low-sodium"></el-option>

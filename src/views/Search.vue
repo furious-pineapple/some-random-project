@@ -50,10 +50,11 @@ interface EdamanQueryParam {
       this.loadRecipes(this.formatQueryParam(searchParam));
     },
     formatQueryParam(searchParam: SearchParam): EdamanQueryParam {
+      // Leaving key in and will disabled on Wednesday (August 11th)
       const params: EdamanQueryParam = {
         q: searchParam.query,
-        app_id: "INSERT APP_ID",
-        app_key: "INSERT APP_KEY",
+        app_id: "ad1e7256",
+        app_key: "60c00bff0d5dbc1f749565708ecb8ef2",
       };
       // NOTE: API does not work if diet is an empty string and Axios does not
       // remove query param if it's empty ... I really thought it did.  Open to making this cleaner
@@ -67,7 +68,11 @@ interface EdamanQueryParam {
       return params;
     },
     addToHistory(recipe: Recipes) {
-      this.updatedSelectedRecipes(recipe);
+      this.addNewRecipe(recipe);
+      this.$message({
+        message: "Congratulations! This recipe was added",
+        type: "success",
+      });
     },
     ...mapActions({ loadRecipes: "edamanAPIModule/loadRecipes" }),
     ...mapMutations({ addNewRecipe: "ADD_NEW_RECIPE" }),

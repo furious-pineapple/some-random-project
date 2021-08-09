@@ -39,6 +39,10 @@ import SearchResults from "./SearchResults.vue";
   methods: {
     removeRecipe(index: number) {
       this.removeSelectedRecipes(index);
+      this.$message({
+        message: "Recipe was removed",
+        type: "warning",
+      });
     },
     ...mapMutations({
       removeSelectedRecipes: "REMOVE_RECIPE",

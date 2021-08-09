@@ -8,15 +8,14 @@ This is my attempt at putting a Vue.js project together. I'll hopefully have a f
 
 #### MVP
 
--[] Create site that searches for recipes based on the users search criteria
-
+- [x] Create site that searches for recipes based on the users search criteria
 - [x] Get API key
 - [x] Create search bar component
 - [x] Create card for search results
 - [x] Add more than one filter option that is optional
-- [] Add pagination
-- [] Add loading icon when we are searching for results
+- [x] Add loading icon when we are searching for results
 
+- [] Add pagination
 - [] When a user selects a recipe, show a more details view of their selection
 - [] Create user account so that user's recipe's can be saved and notes can be added.
 
