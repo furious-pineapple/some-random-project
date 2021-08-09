@@ -94,7 +94,8 @@ import { Options, Vue } from "vue-class-component";
 import { mapState } from "vuex";
 
 @Options({
-  // Note: API docs can be found here:  https://developer.edamam.com/edamam-docs-recipe-api
+  // Note: API docs can be found here
+  // https://developer.edamam.com/edamam-docs-recipe-api
   data() {
     return {
       form: {
@@ -125,17 +126,8 @@ export default class SearchBar extends Vue {
 }
 </script>
 <style scoped>
-.tgif-form-group {
-  display: block;
-  margin-bottom: 15px;
-}
-
 .tgif-search-input {
   width: 100%;
-}
-
-.tgif-form-group {
-  display: block;
 }
 
 .tgif-error-message {

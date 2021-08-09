@@ -4,7 +4,7 @@ Vue what I have built 😉. This project was initialized with Vue CLI.... So I c
 
 ## Goals for this project
 
-This is my attempt at putting a Vue.js project together. I'll hopefully have a functional app that uses the most common Vue features, a data store, and routing. Connecting this app to a functional backend would be a big plus.
+This is my attempt at putting a Vue.js project together. I'll hopefully have a functional app that uses the most common Vue features, a data store, and routing. Connecting this app to a functional backend would be a big plus, but probably won't be mvp.
 
 #### MVP
 
@@ -15,7 +15,7 @@ This is my attempt at putting a Vue.js project together. I'll hopefully have a f
 - [x] Add more than one filter option that is optional
 - [x] Add loading icon when we are searching for results
 
-- [] Add pagination
+- [] Add pagination (current api does not support pagination)
 - [] When a user selects a recipe, show a more details view of their selection
 - [] Create user account so that user's recipe's can be saved and notes can be added.
 
