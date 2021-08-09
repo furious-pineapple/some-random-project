@@ -6,6 +6,26 @@
   <router-view />
 </template>
 
+<script lang="ts">
+import { Options, Vue } from "vue-class-component";
+import { mapMutations, mapState } from "vuex";
+
+@Options({
+  computed: {
+    ...mapState(["selectedRecipes"]),
+  },
+  methods: {
+    ...mapMutations({ setSelectedRecipes: "SET_SELECTED_RECIPES" }),
+  },
+  mounted() {
+    const recipies = window.sessionStorage.getItem("recipies");
+    const selectedRecipes = recipies ? JSON.parse(recipies) : [];
+    this.setSelectedRecipes(selectedRecipes);
+  },
+})
+export default class App extends Vue {}
+</script>
+
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

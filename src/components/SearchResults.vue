@@ -4,16 +4,14 @@
       <img :src="recipe.image" :alt="recipe.label" />
     </div>
     <div class="tgif-recipe-description">
-      <p>Source: {{ recipe.source }}</p>
-      <p>Calories: {{ recipe.calories.toFixed(0) }}</p>
+      <p>Name: {{ recipe.label }}</p>
+      <p>Calories: {{ recipe.calories?.toFixed(0) }}</p>
       <p>Total Time (min): {{ recipe.totalTime }}</p>
+      <p>Source: {{ recipe.source }}</p>
     </div>
-    <div class="tgif-recipe-read-more">
-      <el-button @click="addToHistory(recipe)" type="primary" plain
-        >Add to history</el-button
-      >
-    </div>
+    <slot></slot>
   </div>
+  <el-divider></el-divider>
 </template>
 
 <script lang="ts">
@@ -25,20 +23,6 @@ import { Recipes } from "./SearchResults.interfaces";
     recipe: {
       type: Object,
       default: {},
-    },
-  },
-  methods: {
-    addToHistory(recipe: Recipes) {
-      // TODO: Make sure we retrieve existing value before we push something new
-      const newRecipe: Recipes = {
-        calories: recipe.calories,
-        totalTime: recipe.totalTime,
-        url: recipe.url,
-        source: recipe.source,
-        ingredients: recipe.ingredients,
-        image: recipe.image,
-      };
-      window.sessionStorage.setItem("recipies", JSON.stringify([newRecipe]));
     },
   },
 })

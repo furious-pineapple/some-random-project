@@ -2,24 +2,29 @@
   <div>
     <h1>Search for your next favorite recipe!</h1>
   </div>
-  <search-bar :isLoading="isLoading" @search-recipes="getRecipes"></search-bar>
+  <search-bar @search-recipes="getRecipes"></search-bar>
   <el-row :gutter="20">
     <el-col :span="14" :offset="5">
-      <div v-for="(recipe, index) in recipes" :key="index">
-        <search-results :recipe="recipe.recipe"></search-results>
-        <el-divider></el-divider>
+      <div v-for="(recipe, index) in filteredRecipes" :key="index">
+        <search-results :recipe="recipe">
+          <div>
+            <el-button @click="addToHistory(recipe)" type="primary" plain
+              >Add to history</el-button
+            >
+          </div>
+        </search-results>
       </div>
     </el-col>
   </el-row>
 </template>
 
 <script lang="ts">
-import axios from "axios";
-import qs from "qs";
 import { Options, Vue } from "vue-class-component";
 import SearchBar from "@/components/SearchBar.vue";
 import { SearchParam } from "@/components/SearchBar.interface";
 import SearchResults from "@/components/SearchResults.vue";
+import { Recipes } from "@/components/SearchResults.interfaces";
+import { mapActions, mapMutations, mapState } from "vuex";
 
 interface EdamanQueryParam {
   q: string;
@@ -34,32 +39,21 @@ interface EdamanQueryParam {
     SearchBar,
     SearchResults,
   },
+  data() {
+    return {
+      isLoading: false,
+      hasError: "",
+    };
+  },
   methods: {
     async getRecipes(searchParam: SearchParam): Promise<void> {
-      this.isLoading = true;
-      this.hasError = "";
-      try {
-        const params = this.formatQueryParam(searchParam);
-        const { data: { hits } = [] } = await axios.get(
-          "https://api.edamam.com/search",
-          {
-            params,
-            paramsSerializer: (params) => {
-              return qs.stringify(params);
-            },
-          }
-        );
-        this.recipes = hits;
-      } catch (err) {
-        this.hasError = err.message;
-      }
-      this.isLoading = false;
+      this.loadRecipes(this.formatQueryParam(searchParam));
     },
     formatQueryParam(searchParam: SearchParam): EdamanQueryParam {
       const params: EdamanQueryParam = {
         q: searchParam.query,
-        app_id: "ad1e7256",
-        app_key: "60c00bff0d5dbc1f749565708ecb8ef2",
+        app_id: "INSERT APP_ID",
+        app_key: "INSERT APP_KEY",
       };
       // NOTE: API does not work if diet is an empty string and Axios does not
       // remove query param if it's empty ... I really thought it did.  Open to making this cleaner
@@ -72,13 +66,44 @@ interface EdamanQueryParam {
       }
       return params;
     },
+    addToHistory(recipe: Recipes) {
+      this.updatedSelectedRecipes(recipe);
+    },
+    ...mapActions({ loadRecipes: "edamanAPIModule/loadRecipes" }),
+    ...mapMutations({ addNewRecipe: "ADD_NEW_RECIPE" }),
   },
-  data() {
-    return {
-      recipes: [],
-      isLoading: false,
-      hasError: "",
-    };
+  computed: {
+    ...mapState({
+      recipes: (state: any) => state.edamanAPIModule.recipes,
+      selectedRecipes: (state: any) => state.selectedRecipes,
+    }),
+    filteredRecipes() {
+      return this.recipes.map(
+        ({
+          recipe: {
+            image,
+            source,
+            url,
+            ingredients,
+            calories,
+            totalTime,
+            label,
+          },
+        }: {
+          recipe: Recipes;
+        }) => {
+          return {
+            image,
+            source,
+            url,
+            ingredients,
+            calories,
+            totalTime,
+            label,
+          };
+        }
+      );
+    },
   },
 })
 export default class Home extends Vue {}

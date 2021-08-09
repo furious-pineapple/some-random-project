@@ -1,26 +1,31 @@
 <template>
   <el-row :gutter="20">
     <el-col :span="12" :offset="6">
-      <!-- TODO: Replace with el-form -->
-      <form @submit.prevent="searchRecipes">
-        <div class="tgif-form-group">
-          <label class="tgif-form-label" for="recipe">Recipe: </label>
+      <el-alert
+        v-if="hasError"
+        title="Error: Unable to retrieve recipes.  Please try again later"
+        type="error"
+        class="tgif-error-message"
+      >
+      </el-alert>
+      <el-form
+        :model="form"
+        label-width="120px"
+        @submit.prevent="searchRecipes"
+      >
+        <el-form-item required="true" label="Recipe:">
           <el-input
-            name="recipe"
-            class="tgif-search-input"
+            v-model="form.query"
             placeholder="Please enter recipte"
-            required
-            v-model="query"
-            :loading="isLoading"
+            name="recipe"
           ></el-input>
-        </div>
-        <div class="tgif-form-group">
-          <label class="tgif-form-label" for="diet">Diet Type:</label>
+        </el-form-item>
+        <el-form-item label="Diet Type:">
           <el-select
             class="tgif-search-input"
             name="diet"
             placeholder="Select"
-            v-model="diet"
+            v-model="form.diet"
             :multiple="true"
           >
             <el-option label="High Protien" value="high-protien"></el-option>
@@ -28,15 +33,13 @@
             <el-option label="Low Fat" value="low-fat"></el-option>
             <el-option label="Low Sodium" value="low-sodium"></el-option>
           </el-select>
-        </div>
-
-        <div class="tgif-form-group">
-          <label class="tgif-form-label" for="diet">Cuisine Type:</label>
+        </el-form-item>
+        <el-form-item label="Cuisine Type:">
           <el-select
             class="tgif-search-input"
             name="cuisineType"
             placeholder="Select"
-            v-model="cuisineType"
+            v-model="form.cuisineType"
             :multiple="true"
           >
             <el-option label="American" value="American"></el-option>
@@ -73,42 +76,48 @@
               value="South East Asian"
             ></el-option>
           </el-select>
-        </div>
-        <el-button type="default" native-type="submit" :loading="isLoading"
+        </el-form-item>
+        <el-button
+          class="tgif-submit-button"
+          type="default"
+          native-type="submit"
+          :loading="isLoading"
           >Search</el-button
         >
-      </form>
+      </el-form>
     </el-col>
   </el-row>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
+import { mapState } from "vuex";
 
 @Options({
   // Note: API docs can be found here:  https://developer.edamam.com/edamam-docs-recipe-api
   data() {
     return {
-      query: "",
-      diet: "",
-      cuisineType: "",
+      form: {
+        query: "",
+        diet: "",
+        cuisineType: "",
+      },
     };
   },
   methods: {
     searchRecipes() {
       this.$emit("searchRecipes", {
-        query: this.query,
-        diet: this.diet,
-        cuisineType: this.cuisineType,
+        query: this.form.query,
+        diet: this.form.diet,
+        cuisineType: this.form.cuisineType,
       });
     },
   },
-  props: {
-    // TODO: Move this to state managment
-    isLoading: {
-      type: Boolean,
-      default: false,
-    },
+  computed: {
+    ...mapState({
+      isLoading: (state: any) => state.edamanAPIModule.isLoading,
+      hasError: (state: any) => state.edamanAPIModule.hasError,
+    }),
   },
 })
 export default class SearchBar extends Vue {
@@ -121,15 +130,19 @@ export default class SearchBar extends Vue {
   margin-bottom: 15px;
 }
 
-.tgif-form-label {
-  width: 100px;
-}
-
 .tgif-search-input {
-  width: 50%;
+  width: 100%;
 }
 
 .tgif-form-group {
   display: block;
+}
+
+.tgif-error-message {
+  margin-bottom: 25px;
+}
+
+.tgif-submit-button {
+  margin-bottom: 20px;
 }
 </style>

@@ -5,4 +5,5 @@ export interface Recipes {
   ingredients: string[];
   calories: number;
   totalTime: number;
+  label: string;
 }
