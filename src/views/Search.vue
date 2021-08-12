@@ -53,8 +53,8 @@ interface EdamanQueryParam {
       // Leaving key in and will disabled on Wednesday (August 11th)
       const params: EdamanQueryParam = {
         q: searchParam.query,
-        app_id: "ad1e7256",
-        app_key: "60c00bff0d5dbc1f749565708ecb8ef2",
+        app_id: "ADD_API_ID",
+        app_key: "ADD_API_KEY",
       };
       // NOTE: API does not work if diet is an empty string and Axios does not
       // remove query param if it's empty ... I really thought it did.  Open to making this cleaner
