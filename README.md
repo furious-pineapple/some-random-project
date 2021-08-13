@@ -15,7 +15,13 @@ This is my attempt at putting a Vue.js project together. I'll hopefully have a f
 - [x] Add more than one filter option that is optional
 - [x] Add loading icon when we are searching for results
 
+- [x] Switch API to Spoonacular API
+  - [x] Register to get API key
+  - [x] Update current form to use new api
+  - [x] Validate that new api works on front-end.
+- [] Fix type definition for app
 - [] Add pagination (current api does not support pagination)
+- [] Lazy load images
 - [] When a user selects a recipe, show a more details view of their selection
 - [] Create user account so that user's recipe's can be saved and notes can be added.
 

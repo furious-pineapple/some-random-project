@@ -1,19 +1,20 @@
-import qs from "qs";
 import axios from "axios";
+import { apiKey } from "../../api-keys";
 import { Recipes } from "@/components/SearchResults.interfaces";
 import { Module } from "vuex";
+import { SearchParam } from "@/components/SearchBar.interface";
 
-export interface EdamanAPI {
+export interface SpoonacularAPI {
   isLoading: boolean;
   hasError: boolean;
   recipes: Recipes[];
 }
 
-export interface EdamanState {
+export interface SpoonacularState {
   [key: string]: Recipes | undefined;
 }
 
-export const EdamanAPIModule: Module<EdamanAPI, EdamanState> = {
+export const SpoonacularAPIModule: Module<SpoonacularAPI, SpoonacularState> = {
   namespaced: true,
   state: {
     isLoading: false,
@@ -30,25 +31,22 @@ export const EdamanAPIModule: Module<EdamanAPI, EdamanState> = {
       state.hasError = true;
       state.isLoading = false;
     },
-    SUCCESSFUL_REQUEST(state, loadedRecipes) {
+    SUCCESSFUL_REQUEST(state, { results = [] }) {
       state.isLoading = false;
-      state.recipes = loadedRecipes;
+      state.recipes = results;
     },
   },
   actions: {
-    async loadRecipes({ commit }, params) {
+    async loadRecipes({ commit }, params: SearchParam) {
       commit("LOADING_RECIPES");
       try {
-        const { data: { hits } = [] } = await axios.get(
-          "https://api.edamam.com/search",
+        const { data } = await axios.get(
+          "https://api.spoonacular.com/recipes/complexSearch",
           {
-            params,
-            paramsSerializer: (params) => {
-              return qs.stringify(params, { arrayFormat: "repeat" });
-            },
+            params: { ...params, apiKey, addRecipeNutrition: true },
           }
         );
-        commit("SUCCESSFUL_REQUEST", hits);
+        commit("SUCCESSFUL_REQUEST", data);
       } catch (err) {
         commit("FAILED_REQUEST");
       }

@@ -6,11 +6,12 @@
     <el-col :span="14" :offset="5">
       <div v-for="(recipe, index) in recipes" :key="index">
         <search-results :recipe="recipe">
-          <ul class="tgif-recipe-instructions">
+          <!-- Add instruction -->
+          <!-- <ul class="tgif-recipe-instructions">
             <li v-for="({ text }, index) in recipe.ingredients" :key="index">
               {{ text }}
             </li>
-          </ul>
+          </ul> -->
           <div>
             <el-button @click="removeRecipe(index)" type="danger" plain
               >Remove from History

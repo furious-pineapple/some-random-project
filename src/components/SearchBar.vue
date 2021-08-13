@@ -13,10 +13,10 @@
         label-width="120px"
         @submit.prevent="searchRecipes"
       >
-        <el-form-item required="true" label="Recipe:">
+        <el-form-item :required="true" label="Recipe:">
           <el-input
             v-model="form.query"
-            placeholder="Please enter recipte"
+            placeholder="Chicken, beef, lamb, etc..."
             name="recipe"
           ></el-input>
         </el-form-item>
@@ -24,42 +24,41 @@
           <el-select
             class="tgif-search-input"
             name="diet"
-            placeholder="Select"
+            placeholder="Please select diet type"
             v-model="form.diet"
             :multiple="true"
           >
-            <el-option label="High Protien" value="high-protein"></el-option>
-            <el-option label="Low Carb" value="low-carb"></el-option>
-            <el-option label="Low Fat" value="low-fat"></el-option>
-            <el-option label="Low Sodium" value="low-sodium"></el-option>
+            <el-option label="Gluten Free" value="Gluten Free"></el-option>
+            <el-option label="Ketogenic" value="low-carb"></el-option>
+            <el-option label="Vegetarian" value="Vegetarian"></el-option>
+            <el-option label="Vegan" value="Vegan"></el-option>
+            <el-option label="Pescetarian" value="Pescetarian"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="Cuisine Type:">
           <el-select
             class="tgif-search-input"
             name="cuisineType"
-            placeholder="Select"
-            v-model="form.cuisineType"
+            placeholder="Please select cuisine type"
+            v-model="form.cuisine"
             :multiple="true"
           >
+            <el-option label="African" value="African"></el-option>
             <el-option label="American" value="American"></el-option>
-            <el-option label="Asian" value="Asian"></el-option>
             <el-option label="British" value="British"></el-option>
             <el-option label="Caribbean" value="Caribbean"></el-option>
-            <el-option
-              label="Central Europe"
-              value="Central Europe"
-            ></el-option>
             <el-option label="Chinese" value="Chinese"></el-option>
             <el-option
               label="Eastern Europe"
               value="Eastern Europe"
             ></el-option>
             <el-option label="French" value="French"></el-option>
+            <el-option label="Greek" value="Greek"></el-option>
             <el-option label="Indian" value="Indian"></el-option>
             <el-option label="Italian" value="Italian"></el-option>
             <el-option label="Japanese" value="Japanese"></el-option>
             <el-option label="Kosher" value="Kosher"></el-option>
+            <el-option label="Korean" value="Korean"></el-option>
             <el-option label="Mediterranean" value="Mediterranean"></el-option>
             <el-option label="Mexican" value="Mexican"></el-option>
             <el-option
@@ -67,14 +66,9 @@
               value="Middle Eastern"
             ></el-option>
             <el-option label="Nordic" value="Nordic"></el-option>
-            <el-option
-              label="South American"
-              value="South American"
-            ></el-option>
-            <el-option
-              label="South East Asian"
-              value="South East Asian"
-            ></el-option>
+            <el-option label="Spanish" value="Spanish"></el-option>
+            <el-option label="Thai" value="Thai"></el-option>
+            <el-option label="Vietnamese" value="Vietnamese"></el-option>
           </el-select>
         </el-form-item>
         <el-button
@@ -95,29 +89,33 @@ import { mapState } from "vuex";
 
 @Options({
   // Note: API docs can be found here
-  // https://developer.edamam.com/edamam-docs-recipe-api
+  // https://spoonacular.com/food-api/docs
   data() {
     return {
       form: {
         query: "",
         diet: "",
-        cuisineType: "",
+        cuisine: "",
       },
     };
   },
   methods: {
     searchRecipes() {
+      // TODO: See if something in view can help format this for me
+      const diet = this.form.diet.join ? this.form.diet.join(",") : "";
+      const cuisine = this.form.cuisine.join ? this.form.cuisine.join(",") : "";
+      // TODO: Proper way to declear stuff emitted
       this.$emit("searchRecipes", {
         query: this.form.query,
-        diet: this.form.diet,
-        cuisineType: this.form.cuisineType,
+        diet,
+        cuisine,
       });
     },
   },
   computed: {
     ...mapState({
-      isLoading: (state: any) => state.edamanAPIModule.isLoading,
-      hasError: (state: any) => state.edamanAPIModule.hasError,
+      isLoading: (state: any) => state.SpoonacularAPIModule.isLoading,
+      hasError: (state: any) => state.SpoonacularAPIModule.hasError,
     }),
   },
 })

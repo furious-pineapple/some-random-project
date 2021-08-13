@@ -26,88 +26,60 @@ import SearchResults from "@/components/SearchResults.vue";
 import { Recipes } from "@/components/SearchResults.interfaces";
 import { mapActions, mapMutations, mapState } from "vuex";
 
-interface EdamanQueryParam {
-  q: string;
-  diet?: string[];
-  cuisineType?: string[];
-  app_id: string;
-  app_key: string;
-}
-
 @Options({
   components: {
     SearchBar,
     SearchResults,
   },
-  data() {
-    return {
-      isLoading: false,
-      hasError: "",
-    };
-  },
   methods: {
-    async getRecipes(searchParam: SearchParam): Promise<void> {
-      this.loadRecipes(this.formatQueryParam(searchParam));
+    // NOTE: Could probaly just call this function on the event directly.
+    getRecipes(searchParam: SearchParam): void {
+      this.loadRecipes(searchParam);
     },
-    formatQueryParam(searchParam: SearchParam): EdamanQueryParam {
-      // Leaving key in and will disabled on Wednesday (August 11th)
-      const params: EdamanQueryParam = {
-        q: searchParam.query,
-        app_id: "ADD_API_ID",
-        app_key: "ADD_API_KEY",
-      };
-      // NOTE: API does not work if diet is an empty string and Axios does not
-      // remove query param if it's empty ... I really thought it did.  Open to making this cleaner
-      //  but ok with current solution.
-      if (searchParam.diet) {
-        params.diet = searchParam.diet;
-      }
-      if (searchParam.cuisineType) {
-        params.cuisineType = searchParam.cuisineType;
-      }
-      return params;
-    },
-    addToHistory(recipe: Recipes) {
+    addToHistory(recipe: Recipes): void {
       this.addNewRecipe(recipe);
       this.$message({
         message: "Congratulations! This recipe was added",
         type: "success",
       });
     },
-    ...mapActions({ loadRecipes: "edamanAPIModule/loadRecipes" }),
+    ...mapActions({ loadRecipes: "SpoonacularAPIModule/loadRecipes" }),
     ...mapMutations({ addNewRecipe: "ADD_NEW_RECIPE" }),
   },
   computed: {
     ...mapState({
-      recipes: (state: any) => state.edamanAPIModule.recipes,
+      recipes: (state: any) => state.SpoonacularAPIModule.recipes,
       selectedRecipes: (state: any) => state.selectedRecipes,
     }),
-    filteredRecipes() {
-      return this.recipes.map(
-        ({
-          recipe: {
-            image,
-            source,
-            url,
-            ingredients,
-            calories,
-            totalTime,
-            label,
-          },
-        }: {
-          recipe: Recipes;
-        }) => {
-          return {
-            image,
-            source,
-            url,
-            ingredients,
-            calories,
-            totalTime,
-            label,
-          };
-        }
-      );
+    filteredRecipes(): void {
+      // Nutrition facts are stored in an array but the index for the index for the specific nutrient
+      // is usually the same. We store the index so that we can avoid having to iterate over the array
+      // TODO: update function to keep track of the index of each nutrient to reduce the amount of loops
+      const nutritionIndexs = {
+        Calories: undefined,
+        Carbohydrates: undefined,
+        Protein: undefined,
+      };
+
+      return this.recipes.map(({ id, title, image, nutrition }: Recipes) => {
+        const { nutrients } = nutrition;
+        const info: { [key: string]: number | null } = {
+          Calories: null,
+          Carbohydrates: null,
+          Protein: null,
+        };
+        nutrients.forEach(({ name, amount }) => {
+          if (info[name] === null) {
+            info[name] = amount;
+          }
+        });
+        return {
+          id,
+          title,
+          image,
+          ...info,
+        };
+      });
     },
   },
 })

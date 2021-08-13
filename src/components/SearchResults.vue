@@ -1,13 +1,14 @@
 <template>
   <div id="tgif-recipes" v-if="recipe">
     <div class="tgif-recipe-image">
-      <img :src="recipe.image" :alt="recipe.label" />
+      <img :src="recipe.image" :alt="recipe.title" />
     </div>
     <div class="tgif-recipe-description">
-      <p>Name: {{ recipe.label }}</p>
-      <p>Calories: {{ recipe.calories?.toFixed(0) }}</p>
-      <p>Total Time (min): {{ recipe.totalTime }}</p>
-      <p>Source: {{ recipe.source }}</p>
+      <p>Name: {{ recipe.title }}</p>
+      <!-- TODO: See if there is a way to format props before we get here -->
+      <p>Calories: {{ recipe.Calories?.toFixed(0) }}</p>
+      <p>Carbs: {{ recipe.Carbohydrates?.toFixed(0) }}</p>
+      <p>Protein: {{ recipe.Protein?.toFixed(0) }}</p>
     </div>
     <slot></slot>
   </div>
