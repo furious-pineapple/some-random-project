@@ -43,7 +43,7 @@ export const SpoonacularAPIModule: Module<SpoonacularAPI, SpoonacularState> = {
         const { data } = await axios.get(
           "https://api.spoonacular.com/recipes/complexSearch",
           {
-            params: { ...params, apiKey, addRecipeNutrition: true },
+            params: { ...params, apiKey, addRecipeNutrition: true, number: 8 },
           }
         );
         commit("SUCCESSFUL_REQUEST", data);

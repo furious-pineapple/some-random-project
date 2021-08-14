@@ -19,8 +19,14 @@ This is my attempt at putting a Vue.js project together. I'll hopefully have a f
   - [x] Register to get API key
   - [x] Update current form to use new api
   - [x] Validate that new api works on front-end.
+- [x] Update layout for search results page.
+  - [x] Show 3-4 items for lg
+  - [x] Show 2 items for md
+  - [x] show 1 item for sm
+- [] Add validations where it fits
+- [] Update :filteredRecipes to avoid a loop within a loop.
 - [] Fix type definition for app
-- [] Add pagination (current api does not support pagination)
+- [] Add pagination
 - [] Lazy load images
 - [] When a user selects a recipe, show a more details view of their selection
 - [] Create user account so that user's recipe's can be saved and notes can be added.
