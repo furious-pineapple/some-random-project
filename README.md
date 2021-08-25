@@ -8,6 +8,17 @@ This is my attempt at putting a Vue.js project together. I'll hopefully have a f
 
 #### MVP
 
+Still needs to be done
+
+- [] Find logo image for app
+- [] Add pagination or infinite scrolling option
+- [] When a user selects a recipe, show a more details view of their selection (what do we want to show)
+- [] Architect how backend will be organized? (User verification, move api request to backend, server hosting or lambda, etc)
+- [] Fix type definition for app
+- [] Update :filteredRecipes to avoid a loop within a loop.
+- [] Lazy load images
+- [] Add form/field validations where it fits
+
 - [x] Create site that searches for recipes based on the users search criteria
 - [x] Get API key
 - [x] Create search bar component
@@ -20,16 +31,10 @@ This is my attempt at putting a Vue.js project together. I'll hopefully have a f
   - [x] Update current form to use new api
   - [x] Validate that new api works on front-end.
 - [x] Update layout for search results page.
+
   - [x] Show 3-4 items for lg
   - [x] Show 2 items for md
   - [x] show 1 item for sm
-- [] Add validations where it fits
-- [] Update :filteredRecipes to avoid a loop within a loop.
-- [] Fix type definition for app
-- [] Add pagination
-- [] Lazy load images
-- [] When a user selects a recipe, show a more details view of their selection
-- [] Create user account so that user's recipe's can be saved and notes can be added.
 
 ## Project setup
 
